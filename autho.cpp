@@ -3,7 +3,8 @@
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::Widget)
+    , ui(new Ui::Widget),
+      d(QSqlDatabase::addDatabase("QPSQL"))
 {
     ui->setupUi(this);
 
@@ -12,8 +13,6 @@ Widget::Widget(QWidget *parent)
         ui->pbExit->setEnabled(0);
         ui->pbEnter->setEnabled(0);
     }
-
-
 }
 
 Widget::~Widget()
@@ -22,8 +21,7 @@ Widget::~Widget()
 }
 
 bool Widget::createConnection(){
-    QSqlDatabase d = QSqlDatabase::addDatabase("QPSQL");
-    qDebug() << "isValid: " << d.isValid();
+
     d.setDatabaseName("cinema");
     d.setUserName("keesaev");
     d.setPassword("Admin1");
@@ -33,10 +31,6 @@ bool Widget::createConnection(){
         return 0;
     }
 
-    if(d.lastError().text() != " "){
-        QMessageBox::warning(0, "Не удалось соединиться с базой данных", d.lastError().text());
-        return 0;
-    }
     qDebug() << "Connection success";
     return 1;
 }

@@ -25,7 +25,7 @@ public:
     bool createConnection();
     int ID;
     QString password;
-    QSqlDatabase db;
+    QSqlDatabase d;
     QSqlQuery query;
 private slots:
     void on_pbExit_clicked();
