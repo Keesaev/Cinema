@@ -6,7 +6,7 @@ booking::booking(QWidget *parent) :
     ui(new Ui::booking)
 {
     ui->setupUi(this);
-    scene = new drawCinema(15, 10, nullptr);
+    scene = new drawCinema(1, nullptr);
 
     ui->gridLayout->geometry().setWidth(scene->width);
     ui->gridLayout->geometry().setHeight(scene->height);
@@ -16,5 +16,6 @@ booking::booking(QWidget *parent) :
 
 booking::~booking()
 {
+    delete scene;
     delete ui;
 }

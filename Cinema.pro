@@ -21,17 +21,20 @@ SOURCES += \
     drawcinema.cpp \
     main.cpp \
     autho.cpp \
-    seat.cpp
+    seat.cpp \
+    sessions.cpp
 
 HEADERS += \
     autho.h \
     booking.h \
     drawcinema.h \
-    seat.h
+    seat.h \
+    sessions.h
 
 FORMS += \
     autho.ui \
-    booking.ui
+    booking.ui \
+    sessions.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -10,12 +10,15 @@
 #include <QVector>
 #include <QDebug>
 
+#include <QSql>
+#include <QSqlQuery>
+#include <QSqlError>
+
 class drawCinema : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit drawCinema(QWidget *parent = nullptr);
-    drawCinema(int c = 10, int r = 15, QWidget *parent = nullptr);
+    explicit drawCinema(int id_s, QWidget *parent = nullptr);
     virtual ~drawCinema(){
         /*
         for(int i = 0; i < cols; i++)
@@ -24,18 +27,19 @@ public:
                 delete seats[i][j];
             }
         seats.clear();*/
-        for(int i = 0; i < cols; i++)
+
+        for(int i = 0; i < seats.size(); i++)
             QVector<seat*>().swap(seats[i]);
         QVector<QVector<seat*>>().swap(seats);
-        qDebug() << "size" << seats.size()
-                 << "capacity" << seats.capacity();
         delete scene;
     }
 
     QGraphicsScene      *scene;
+    QSqlDatabase        d;
 
-    int cols = 5;
-    int rows = 5;
+    int id_session;
+    int cols = 15;
+    int rows = 10;
 
     const int width = 800;
     const int height = 600;
@@ -47,6 +51,8 @@ public:
 
     int innerBorderWidth = cellWidth * 0.1;
     int innerBorderHeight = cellHeight * 0.1;
+
+    void drawScene();
 
     QVector<QVector<seat*>> seats;
 

@@ -1,8 +1,11 @@
 #include "drawcinema.h"
 
-drawCinema::drawCinema(QWidget *parent)
-    : QGraphicsView(parent)
+drawCinema::drawCinema(int id_s, QWidget *parent)
+    : QGraphicsView(parent),
+      d(QSqlDatabase::addDatabase("QPSQL"))
 {
+    id_session = id_s;
+
     scene = new QGraphicsScene();
 
     this->setScene(scene);
@@ -12,9 +15,12 @@ drawCinema::drawCinema(QWidget *parent)
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     this->setMinimumSize(width, height);
-
     scene->setSceneRect(0, 0, width, height);
+    qDebug() << id_session;
+    drawScene();
+}
 
+void drawCinema::drawScene(){
     for(int i = 0; i < cols; i++){
         seats.push_back(QVector<seat*>());
         for(int j = 0; j < rows; j++){
@@ -29,9 +35,4 @@ drawCinema::drawCinema(QWidget *parent)
             scene->addItem(seats[i][j]);
         }
     }
-}
-
-drawCinema::drawCinema(int c, int r, QWidget *parent){
-    cols = c;
-    rows = r;
 }
