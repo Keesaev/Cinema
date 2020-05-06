@@ -138,9 +138,15 @@ void sessions::dateSelected(){
 void sessions::on_pbBook_clicked()
 {
     if(ui->tableWidget->selectedItems().isEmpty())
+    {
         qDebug() << "None selected";
-    else{
+        QMessageBox::warning(0, "Выберите сеанс", "Выберите сеанс из списка");
+    }
+    else
+    {
         qDebug() << ui->tableWidget->selectedItems()[0]->text();
+        booking *b = new booking(ui->tableWidget->selectedItems()[0]->text().toInt());
+        b->show();
     }
 }
 

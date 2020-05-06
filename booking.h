@@ -13,10 +13,18 @@ class booking : public QWidget
     Q_OBJECT
 
 public:
-    explicit booking(QWidget *parent = nullptr);
+    explicit booking(int id_s, QWidget *parent = nullptr);
     ~booking();
     QGraphicsView *myGraphicView;
     drawCinema    *scene;
+
+    int id_session;
+
+private slots:
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
     Ui::booking *ui;
 };

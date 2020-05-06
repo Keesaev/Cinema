@@ -11,17 +11,16 @@ class seat : public QObject, public QGraphicsItem
     Q_OBJECT
 public:
     explicit seat(QObject *parent = nullptr);
-    seat(int x, int y, int w, int h, QObject *parent = nullptr){
-        i = x;
-        j = y;
-        width = w;
-        height = h;
-    }
+    seat(int x, int y, int w, int h, QObject *parent = nullptr);
+
     int width = 50;
     int height = 50;
     int i;
     int j;
-private:
+
+    QString str;
+
+public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget);

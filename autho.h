@@ -11,6 +11,8 @@
 #include <QPushButton>
 #include <QLineEdit>
 
+#include "sessions.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
 QT_END_NAMESPACE

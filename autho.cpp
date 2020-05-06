@@ -52,13 +52,19 @@ void Widget::on_pbEnter_clicked()
 
     QSqlRecord rec = query.record();
 
-    int qID = 0;
     QString qPass;
 
     while(query.next()){
         if(query.value(rec.indexOf("id")).toInt() == ID ||
-                query.value(rec.indexOf("password")).toString() == password)
+                query.value(rec.indexOf("password")).toString() == password){
             qDebug() << "Success";
+            sessions *s = new sessions();
+            s->show();
+
+            this->close();
+
+            return;
+        }
     }
 
     QMessageBox::warning(0, "Неверные данные",

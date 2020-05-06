@@ -14,6 +14,8 @@
 #include <QVector>
 #include <QTableWidgetItem>
 
+#include "booking.h"
+
 namespace Ui {
 class sessions;
 }

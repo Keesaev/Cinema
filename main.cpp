@@ -10,11 +10,11 @@ int main(int argc, char *argv[])
     /*
     Widget w;
     w.setWindowTitle("Введите идентификатор и пароль");
-    w.show();*/
+    w.show();
+    */
 
-
-    booking b;
-    b.show();
+    booking *b = new booking(1, nullptr);
+    b->show();
 
     /*
     sessions s;

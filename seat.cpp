@@ -1,8 +1,13 @@
 #include "seat.h"
 
-seat::seat(QObject *parent) : QObject(parent), QGraphicsItem()
+seat::seat(int x, int y, int w, int h, QObject *parent) : QObject(parent), QGraphicsItem()
 {
+    i = x;
+    j = y;
+    width = w;
+    height = h;
 
+    str = QString::number(i + 1) + ", " + QString::number(j + 1);
 }
 
 QRectF seat::boundingRect() const{
@@ -12,10 +17,9 @@ QRectF seat::boundingRect() const{
 void seat::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                  QWidget *widget){
     painter->drawRect(boundingRect());
-    painter->drawText(boundingRect(), QString::number(i) + ", " +
-                      QString::number(j));
+    painter->drawText(boundingRect(), str);
 }
 
 void seat::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    qDebug() << "Clicked on: "<< i << " " << j;
+
 }

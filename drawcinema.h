@@ -3,16 +3,24 @@
 
 #include <QObject>
 #include <QWidget>
+
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsItemGroup>
+
 #include "seat.h"
+#include "seatbooked.h"
+
+#include <QPair>
 #include <QVector>
+
 #include <QDebug>
+#include <QMessageBox>
 
 #include <QSql>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QSqlRecord>
 
 class drawCinema : public QGraphicsView
 {
@@ -46,19 +54,25 @@ public:
 
     int screenSpace = 100;
 
-    int cellWidth = width / cols;
-    int cellHeight = (height - screenSpace)/ rows;
+    int cellWidth = 50;
+    int cellHeight = 50;
 
-    int innerBorderWidth = cellWidth * 0.1;
-    int innerBorderHeight = cellHeight * 0.1;
+    int innerBorderWidth = 5;
+    int innerBorderHeight = 5;
 
     void drawScene();
+    bool createConnection();
+    bool getRoomInfo();
+    bool getBookedInfo();
 
+    QVector<QPair<int, int>> chosen;
     QVector<QVector<seat*>> seats;
 
 signals:
 
 public slots:
+    void itemClicked(QGraphicsSceneMouseEvent *e);
+
 };
 
 #endif // DRAWCINEMA_H

@@ -22,6 +22,7 @@ SOURCES += \
     main.cpp \
     autho.cpp \
     seat.cpp \
+    seatbooked.cpp \
     sessions.cpp
 
 HEADERS += \
@@ -29,6 +30,7 @@ HEADERS += \
     booking.h \
     drawcinema.h \
     seat.h \
+    seatbooked.h \
     sessions.h
 
 FORMS += \
