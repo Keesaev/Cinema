@@ -135,6 +135,8 @@ void sessions::dateSelected(){
         displaySessions();
 }
 
+// ЗАБРОНИРОВАТЬ
+
 void sessions::on_pbBook_clicked()
 {
     if(ui->tableWidget->selectedItems().isEmpty())
@@ -162,4 +164,11 @@ sessions::~sessions()
     QVector<QVector<QTableWidgetItem*>>().swap(items);
     items.clear();
     delete ui;
+}
+
+// ДОБАВИТЬ ФИЛЬМ
+
+void sessions::on_pushButton_clicked()
+{
+
 }

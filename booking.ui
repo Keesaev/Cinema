@@ -50,6 +50,19 @@
     <string>Отмена</string>
    </property>
   </widget>
+  <widget class="QTextEdit" name="teBooked">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>820</x>
+     <y>10</y>
+     <width>301</width>
+     <height>111</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

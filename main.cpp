@@ -1,6 +1,7 @@
 #include "autho.h"
 #include "booking.h"
 #include "sessions.h"
+#include "addfilm.h"
 
 #include <QApplication>
 
@@ -15,6 +16,13 @@ int main(int argc, char *argv[])
 
     booking *b = new booking(1, nullptr);
     b->show();
+
+
+    /*
+    addFilm ad;
+    ad.show();
+
+    */
 
     /*
     sessions s;

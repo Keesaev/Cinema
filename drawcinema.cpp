@@ -45,12 +45,27 @@ void drawCinema::drawScene(){
 
     // Отрисовываем зал соответственно заранее заполненной матрице
 
+    scene->clear();
+
+    QGraphicsItemGroup *bg = new QGraphicsItemGroup();
+    QPixmap bgImg;
+
+    if(!bgImg.load(":images/images/backGround.jpg"))
+        qDebug() << "Unable to load bg image";
+    else
+        qDebug() << "Bg image loaded";
+
+    bg->addToGroup(scene->addPixmap(bgImg));
+    bg->setX(0);
+    bg->setY(0);
+
+    scene->addItem(bg);
+
     for(int i = 0; i < cols; i++){
         for(int j = 0; j < rows; j++)
         {
-            seats[i][j]->setX(i * cellWidth + innerBorderWidth * 2);
-            seats[i][j]->setY(j * cellHeight + innerBorderHeight * 2 +
-                              screenSpace);
+            seats[i][j]->setX(i * cellWidth);
+            seats[i][j]->setY((rows - 1 - j) * cellHeight);
             scene->addItem(seats[i][j]);
         }
     }
@@ -73,19 +88,6 @@ bool drawCinema::getBookedInfo(){
     QSqlRecord rec;
     rec = q.record();
 
-    // Заполняем места как свободные
-
-    for(int i = 0; i < cols; i++){
-        seats.push_back(QVector<seat*>());
-        for(int j = 0; j < rows; j++){
-            seat *buffSeat = new seat(i,
-                                      j,
-                                      cellWidth - innerBorderWidth * 4,
-                                      cellHeight - innerBorderHeight * 4);
-            seats[i].push_back(buffSeat);
-        }
-    }
-
     // В соответствии с рез-тами запроса переопределяем места как занятые
 
     while(q.next()){
@@ -94,8 +96,8 @@ bool drawCinema::getBookedInfo(){
 
         seats[i][j] = new seatBooked(i,
                                      j,
-                                     cellWidth - innerBorderWidth * 4,
-                                     cellHeight - innerBorderHeight * 4);
+                                     cellWidth,
+                                     cellHeight);
     }
 
     return 1;
@@ -131,16 +133,22 @@ bool drawCinema::getRoomInfo(){
     // Определяем графические метрики
 
     cellWidth = width / cols;
-    cellHeight = (height - screenSpace)/ rows;
+    cellHeight = (height - 100) / rows;
 
-    innerBorderWidth = cellWidth * 0.1;
-    innerBorderHeight = cellHeight * 0.1;
+    // Заполняем места как свободные
+
+    for(int i = 0; i < cols; i++){
+        seats.push_back(QVector<seat*>());
+        for(int j = 0; j < rows; j++){
+            seat *buffSeat = new seat(i,
+                                      j,
+                                      cellWidth,
+                                      cellHeight, this);
+            seats[i].push_back(buffSeat);
+        }
+    }
 
     return 1;
-}
-
-void drawCinema::itemClicked(QGraphicsSceneMouseEvent *e){
-    qDebug() << "Click";
 }
 
 bool drawCinema::createConnection(){
@@ -155,4 +163,11 @@ bool drawCinema::createConnection(){
 
     qDebug() << "Connection success";
     return 1;
+}
+
+void drawCinema::itemClicked(int i, int j){
+    qDebug() << "Click";
+    QPainter p;
+    scene->update();
+    emit itemClickedSignal(i, j);
 }

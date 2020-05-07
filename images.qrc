@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/Blue-Velvet.jpg</file>
+        <file>images/seat_vacant.png</file>
+        <file>images/backGround.jpg</file>
+        <file>images/seat_booked.png</file>
+        <file>images/seat_selected.png</file>
+    </qresource>
+</RCC>

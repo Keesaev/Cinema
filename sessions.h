@@ -2,17 +2,21 @@
 #define SESSIONS_H
 
 #include <QWidget>
+#include <QCalendarWidget>
+#include <QTableWidgetItem>
+
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QSqlRecord>
+
 #include <QMessageBox>
 #include <QDebug>
+
 #include <QDate>
-#include <QCalendarWidget>
 #include <QDateTime>
-#include <QSqlRecord>
+
 #include <QVector>
-#include <QTableWidgetItem>
 
 #include "booking.h"
 
@@ -45,6 +49,7 @@ protected slots:
 private slots:
     void on_pbBook_clicked();
     void on_pbExit_clicked();
+    void on_pushButton_clicked();
 };
 
 #endif // SESSIONS_H

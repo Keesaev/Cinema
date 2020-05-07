@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QWidget>
 
+#include <QGraphicsItem>
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsItemGroup>
@@ -52,13 +53,10 @@ public:
     const int width = 800;
     const int height = 600;
 
-    int screenSpace = 100;
+    int screenSpace = 0;
 
     int cellWidth = 50;
     int cellHeight = 50;
-
-    int innerBorderWidth = 5;
-    int innerBorderHeight = 5;
 
     void drawScene();
     bool createConnection();
@@ -69,9 +67,9 @@ public:
     QVector<QVector<seat*>> seats;
 
 signals:
-
+    void itemClickedSignal(int i, int j);
 public slots:
-    void itemClicked(QGraphicsSceneMouseEvent *e);
+    void itemClicked(int i, int j);
 
 };
 

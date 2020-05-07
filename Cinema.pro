@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    addfilm.cpp \
     booking.cpp \
     drawcinema.cpp \
     main.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
     sessions.cpp
 
 HEADERS += \
+    addfilm.h \
     autho.h \
     booking.h \
     drawcinema.h \
@@ -34,6 +36,7 @@ HEADERS += \
     sessions.h
 
 FORMS += \
+    addfilm.ui \
     autho.ui \
     booking.ui \
     sessions.ui
@@ -42,3 +45,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    images.qrc
