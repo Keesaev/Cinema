@@ -7,7 +7,7 @@ seat::seat(int x, int y, int w, int h, QObject *parent) : QObject(parent), QGrap
     width = w;
     height = h;
 
-    str = QString::number(i + 1) + ", " + QString::number(j + 1);
+    str = QString::number(j + 1) + ", " + QString::number(i + 1);
 
     if(!pm.load(":images/images/seat_vacant.png"))
         qDebug() << "Unable to load image seat_vacant.png";

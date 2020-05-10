@@ -1,47 +1,41 @@
 #include "booking.h"
 #include "ui_booking.h"
 
-booking::booking(int id_s, QWidget *parent) :
+booking::booking(int id_s, QSqlDatabase *d, QWidget *parent) :
     QWidget(parent),
-    db(QSqlDatabase::addDatabase("QPSQL")),
+    db(d),
     ui(new Ui::booking)
 {
     id_session = id_s;
 
     ui->setupUi(this);
 
-    if(!createConnection()){
-        return;
+    if(!db->isOpen()){
+        if(!createConnection())
+            return;
     }
-    else{
-        scene = new drawCinema(id_session, this);
-        connect(scene, SIGNAL(itemClickedSignal(int, int)), this, SLOT(itemClicked(int, int)));
-        ui->gridLayout->addWidget(scene);
-        ui->gridLayout->geometry().setWidth(scene->width);
-        ui->gridLayout->geometry().setHeight(scene->height);
-        ui->gridLayout->geometry().setCoords(0, 0, 800, 600);
-    }
+
+    scene = new drawCinema(id_session, db, this);
+    connect(scene, SIGNAL(itemClickedSignal(int, int)), this, SLOT(itemClicked(int, int)));
+    ui->gridLayout->addWidget(scene);
+    ui->gridLayout->geometry().setWidth(scene->width);
+    ui->gridLayout->geometry().setHeight(scene->height);
+    ui->gridLayout->geometry().setCoords(0, 0, 800, 600);
 }
 
 bool booking::createConnection(){
 
-    db.setDatabaseName("cinema");
-    db.setUserName("keesaev");
-    db.setPassword("Admin1");
+    db->setDatabaseName("cinema");
+    db->setUserName("keesaev");
+    db->setPassword("Admin1");
 
-    if(!db.open()){
-        QMessageBox::warning(0, "Не удалось соединиться с базой данных", db.lastError().text());
+    if(!db->open()){
+        QMessageBox::warning(0, "Не удалось соединиться с базой данных в booking", db->lastError().text());
         return 0;
     }
 
-    qDebug() << "Connection success";
+    qDebug() << "Booking Connection success";
     return 1;
-}
-
-booking::~booking()
-{
-    delete scene;
-    delete ui;
 }
 
 void booking::on_pushButton_clicked()
@@ -58,8 +52,8 @@ void booking::on_pushButton_clicked()
         q.prepare("INSERT INTO BOOKED (ID_SESSION, ROW, COL) "
                   "VALUES (:id_session, :row, :col);");
         q.bindValue(":id_session", id_session);
-        q.bindValue(":row", bookedSeats[i].first);
-        q.bindValue(":col", bookedSeats[i].second);
+        q.bindValue(":col", bookedSeats[i].first);
+        q.bindValue(":row", bookedSeats[i].second);
 
         scene->seats[bookedSeats[i].first][bookedSeats[i].second] = new
                 seatBooked(bookedSeats[i].first,
@@ -89,6 +83,7 @@ void booking::on_pushButton_clicked()
 void booking::on_pushButton_2_clicked()
 {
     this->close();
+    emit closeSignal();
 }
 
 void booking::itemClicked(int i, int j){
@@ -115,9 +110,17 @@ void booking::itemClicked(int i, int j){
     ui->teBooked->append("Выбранные места: ");
     for(int a = 0; a < bookedSeats.size(); a++){
         ui->teBooked->append("Ряд " +
-                             QString::number(bookedSeats[a].first) +
+                             QString::number(bookedSeats[a].second + 1) +
                              " Место " +
-                             QString::number(bookedSeats[a].second));
+                             QString::number(bookedSeats[a].first + 1));
     }
 
+}
+
+booking::~booking()
+{
+    scene->~drawCinema();
+    delete scene;
+    delete ui;
+    qDebug() << "destructor booking call";
 }

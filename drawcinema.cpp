@@ -1,10 +1,15 @@
 #include "drawcinema.h"
 
-drawCinema::drawCinema(int id_s, QWidget *parent)
+drawCinema::drawCinema(int id_s, QSqlDatabase *d, QWidget *parent)
     : QGraphicsView(parent),
-      d(QSqlDatabase::addDatabase("QPSQL"))
+      dd(d)
 {
     id_session = id_s;
+
+    if(!dd->isOpen()){
+        if(!createConnection())
+            return;
+    }
 
     scene = new QGraphicsScene();
 
@@ -18,12 +23,6 @@ drawCinema::drawCinema(int id_s, QWidget *parent)
     scene->setSceneRect(0, 0, width, height);
     qDebug() << id_session;
 
-    //
-
-    // Соединение с БД
-
-    if(!createConnection())
-        return;
 
     // Получаем метрики зала
 
@@ -91,8 +90,9 @@ bool drawCinema::getBookedInfo(){
     // В соответствии с рез-тами запроса переопределяем места как занятые
 
     while(q.next()){
-        int i = q.value(rec.indexOf("ROW")).toInt();
-        int j = q.value(rec.indexOf("COL")).toInt();
+
+        int i = q.value(rec.indexOf("COL")).toInt();
+        int j = q.value(rec.indexOf("ROW")).toInt();
 
         seats[i][j] = new seatBooked(i,
                                      j,
@@ -152,16 +152,16 @@ bool drawCinema::getRoomInfo(){
 }
 
 bool drawCinema::createConnection(){
-    d.setDatabaseName("cinema");
-    d.setUserName("keesaev");
-    d.setPassword("Admin1");
+    dd->setDatabaseName("cinema");
+    dd->setUserName("keesaev");
+    dd->setPassword("Admin1");
 
-    if(!d.open()){
-        QMessageBox::warning(0, "Не удалось соединиться с базой данных", d.lastError().text());
+    if(!dd->open()){
+        QMessageBox::warning(0, "Не удалось соединиться с базой данных в drawCinema", dd->lastError().text());
         return 0;
     }
 
-    qDebug() << "Connection success";
+    qDebug() << "drawCinema connection success";
     return 1;
 }
 

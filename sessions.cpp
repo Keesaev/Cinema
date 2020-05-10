@@ -3,12 +3,14 @@
 
 sessions::sessions(QWidget *parent) :
     QWidget(parent),
-    d(QSqlDatabase::addDatabase("QPSQL")),
+    ds(QSqlDatabase::addDatabase("QPSQL")),
     ui(new Ui::sessions)
 
 {
     ui->setupUi(this);
+
     calendar = new QCalendarWidget();
+
     ui->gridLayout->addWidget(calendar);
 
     if(!createConnection())
@@ -20,7 +22,12 @@ sessions::sessions(QWidget *parent) :
 
     QDate testDate(2020, 5, 21);
     calendar->setSelectedDate(testDate);
+
+    m = new movies(&ds);
+    r = new rooms(&ds);
 }
+
+// Шапка таблицы и прочие настройки
 
 void sessions::initTable(){
     QStringList headersList;
@@ -35,7 +42,10 @@ void sessions::initTable(){
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Stretch);
 }
 
+// Запрос
+
 bool sessions::getSessions(QDate date){
+    q.clear();
     QString str;
     str = "SELECT SESSIONS.ID_SESSION, "
           "SESSIONS.ID_ROOM, SESSIONS.DATE, "
@@ -47,23 +57,25 @@ bool sessions::getSessions(QDate date){
             QString::number(date.year()) + ";";
 
     if(!q.exec(str)){
-        qDebug() << "Query error " + q.lastError().text();
+        QMessageBox::warning(0, "Ошибка зароса", q.lastError().text());
         return 0;
     }
-    qDebug() << "Successful query";
-
     return 1;
 }
+
+// Переопределяем таблицу и вектор item'ов, читаем результат запроса
 
 bool sessions::displaySessions(){
 
     ui->tableWidget->clear();
     initTable();
-
-    for(int i = 0; i < items.size(); i++)
+    for(int i = 0; i < items.size(); i++){
         QVector<QTableWidgetItem*>().swap(items[i]);
+        items[i].shrink_to_fit();
+    }
     QVector<QVector<QTableWidgetItem*>>().swap(items);
     items.clear();
+    items.shrink_to_fit();
 
     QSqlRecord  rec = q.record();
 
@@ -85,9 +97,6 @@ bool sessions::displaySessions(){
         dt = q.value(rec.indexOf("DATE")).toDateTime();
         movie_name = q.value(rec.indexOf("NAME")).toString();
 
-        qDebug() << id_session << " " << id_room << " " <<
-                    price << " " << dt << " " << movie_name;
-
         for(int j = 0; j < 5; j++){
             items[i].push_back(new QTableWidgetItem());
         }
@@ -108,25 +117,29 @@ bool sessions::displaySessions(){
     return 1;
 }
 
+// Соединение с бд
+
 bool sessions::createConnection(){
 
-    d.setDatabaseName("cinema");
-    d.setUserName("keesaev");
-    d.setPassword("Admin1");
+    ds.setDatabaseName("cinema");
+    ds.setUserName("keesaev");
+    ds.setPassword("Admin1");
 
-    if(!d.open()){
-        QMessageBox::warning(0, "Не удалось соединиться с базой данных", d.lastError().text());
+    if(!ds.open()){
+        QMessageBox::warning(0, "Не удалось соединиться с базой данных в sessions", ds.lastError().text());
         return 0;
     }
 
-    qDebug() << "Connection success";
+    qDebug() << "Sessions connection success";
     return 1;
 }
 
                 // SLOTS //
 
 void sessions::dateSelected(){
-    qDebug() << calendar->selectedDate().day();
+
+    ui->tableWidget->clear();
+
     if(!getSessions(calendar->selectedDate()))
     {
         return;
@@ -143,11 +156,12 @@ void sessions::on_pbBook_clicked()
     {
         qDebug() << "None selected";
         QMessageBox::warning(0, "Выберите сеанс", "Выберите сеанс из списка");
+        return;
     }
     else
     {
         qDebug() << ui->tableWidget->selectedItems()[0]->text();
-        booking *b = new booking(ui->tableWidget->selectedItems()[0]->text().toInt());
+        b = new booking(ui->tableWidget->selectedItems()[0]->text().toInt(), &ds);
         b->show();
     }
 }
@@ -157,6 +171,16 @@ void sessions::on_pbExit_clicked()
     this->close();
 }
 
+void sessions::on_pbMovies_clicked()
+{
+    m->show();
+}
+
+void sessions::on_pbRooms_clicked()
+{
+    r->show();
+}
+
 sessions::~sessions()
 {
     for(int i = 0; i < items.size(); i++)
@@ -164,11 +188,7 @@ sessions::~sessions()
     QVector<QVector<QTableWidgetItem*>>().swap(items);
     items.clear();
     delete ui;
-}
-
-// ДОБАВИТЬ ФИЛЬМ
-
-void sessions::on_pushButton_clicked()
-{
-
+    delete m;
+    delete b;
+    delete r;
 }

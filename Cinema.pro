@@ -17,28 +17,31 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    addfilm.cpp \
     booking.cpp \
     drawcinema.cpp \
     main.cpp \
     autho.cpp \
+    movies.cpp \
+    rooms.cpp \
     seat.cpp \
     seatbooked.cpp \
     sessions.cpp
 
 HEADERS += \
-    addfilm.h \
     autho.h \
     booking.h \
     drawcinema.h \
+    movies.h \
+    rooms.h \
     seat.h \
     seatbooked.h \
     sessions.h
 
 FORMS += \
-    addfilm.ui \
     autho.ui \
     booking.ui \
+    movies.ui \
+    rooms.ui \
     sessions.ui
 
 # Default rules for deployment.

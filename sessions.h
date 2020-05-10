@@ -19,6 +19,8 @@
 #include <QVector>
 
 #include "booking.h"
+#include "movies.h"
+#include "rooms.h"
 
 namespace Ui {
 class sessions;
@@ -32,9 +34,12 @@ public:
     explicit sessions(QWidget *parent = nullptr);
     ~sessions();
 
-    QSqlDatabase d;
+    QSqlDatabase ds;
     QSqlQuery q;
     QCalendarWidget *calendar;
+    booking *b;
+    movies *m;
+    rooms *r;
 
     void initTable();
     bool createConnection();
@@ -49,7 +54,9 @@ protected slots:
 private slots:
     void on_pbBook_clicked();
     void on_pbExit_clicked();
-    void on_pushButton_clicked();
+
+    void on_pbMovies_clicked();
+    void on_pbRooms_clicked();
 };
 
 #endif // SESSIONS_H

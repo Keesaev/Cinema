@@ -27,24 +27,26 @@ class drawCinema : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit drawCinema(int id_s, QWidget *parent = nullptr);
+    explicit drawCinema(int id_s, QSqlDatabase *d, QWidget *parent = nullptr);
     virtual ~drawCinema(){
-        /*
+
         for(int i = 0; i < cols; i++)
             for(int j = 0; j < rows; j++)
             {
-                delete seats[i][j];
+                seats[i][j]->~seat();
             }
-        seats.clear();*/
 
         for(int i = 0; i < seats.size(); i++)
             QVector<seat*>().swap(seats[i]);
         QVector<QVector<seat*>>().swap(seats);
         delete scene;
+
+
+        qDebug() << "destructor drawCinema called";
     }
 
     QGraphicsScene      *scene;
-    QSqlDatabase        d;
+    QSqlDatabase        *dd;
 
     int id_session;
     int cols = 15;

@@ -13,7 +13,7 @@ class seat : public QObject, public QGraphicsItem
 public:
     explicit seat(QObject *parent = nullptr);
     seat(int x, int y, int w, int h, QObject *parent = nullptr);
-
+    ~seat(){}
     int width = 50;
     int height = 50;
     int i;

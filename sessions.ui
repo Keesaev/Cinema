@@ -37,8 +37,8 @@
   <widget class="QPushButton" name="pbExit">
    <property name="geometry">
     <rect>
-     <x>720</x>
-     <y>320</y>
+     <x>900</x>
+     <y>370</y>
      <width>171</width>
      <height>41</height>
     </rect>
@@ -53,7 +53,7 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>900</x>
+     <x>720</x>
      <y>320</y>
      <width>171</width>
      <height>41</height>
@@ -63,7 +63,7 @@
     <string>Забронировать</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pbMovies">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -73,7 +73,46 @@
     </rect>
    </property>
    <property name="text">
-    <string>Добавить фильм</string>
+    <string>Фильмы</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbRooms">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>370</y>
+     <width>171</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Залы</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbAddSession">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>370</y>
+     <width>171</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Добавить сеанс</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbDeleteSession">
+   <property name="geometry">
+    <rect>
+     <x>900</x>
+     <y>320</y>
+     <width>171</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Удалить сеанс</string>
    </property>
   </widget>
  </widget>

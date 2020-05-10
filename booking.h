@@ -21,11 +21,11 @@ class booking : public QWidget
     Q_OBJECT
 
 public:
-    explicit booking(int id_s, QWidget *parent = nullptr);
+    explicit booking(int id_s, QSqlDatabase *d, QWidget *parent = nullptr);
     ~booking();
     QGraphicsView *myGraphicView;
     drawCinema    *scene;
-    QSqlDatabase   db;
+    QSqlDatabase  *db;
 
 
     int id_session;
@@ -42,6 +42,7 @@ private slots:
 private:
     Ui::booking *ui;
     signals:
+    void closeSignal();
 };
 
 #endif // BOOKING_H
