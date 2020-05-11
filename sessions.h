@@ -21,6 +21,7 @@
 #include "booking.h"
 #include "movies.h"
 #include "rooms.h"
+#include "addsession.h"
 
 namespace Ui {
 class sessions;
@@ -31,7 +32,7 @@ class sessions : public QWidget
     Q_OBJECT
 
 public:
-    explicit sessions(QWidget *parent = nullptr);
+    explicit sessions(QSqlDatabase *d, QWidget *parent = nullptr);
     ~sessions();
 
     QSqlDatabase ds;
@@ -40,6 +41,7 @@ public:
     booking *b;
     movies *m;
     rooms *r;
+    addSession *as;
 
     void initTable();
     bool createConnection();
@@ -57,6 +59,8 @@ private slots:
 
     void on_pbMovies_clicked();
     void on_pbRooms_clicked();
+    void on_pbAddSession_clicked();
+    void on_pbDeleteSession_clicked();
 };
 
 #endif // SESSIONS_H

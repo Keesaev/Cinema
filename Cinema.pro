@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    addsession.cpp \
     booking.cpp \
     drawcinema.cpp \
     main.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
     sessions.cpp
 
 HEADERS += \
+    addsession.h \
     autho.h \
     booking.h \
     drawcinema.h \
@@ -38,6 +40,7 @@ HEADERS += \
     sessions.h
 
 FORMS += \
+    addsession.ui \
     autho.ui \
     booking.ui \
     movies.ui \

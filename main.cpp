@@ -10,25 +10,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    /*
     Widget w;
     w.setWindowTitle("Введите идентификатор и пароль");
     w.show();
-    */
-
-    /*
-    booking *b = new booking(1, nullptr);
-    b->show();
-    */
-
-    /*
-    movies m;
-    m.show();
-    */
-
-
-    sessions s;
-    s.show();
 
     return a.exec();
 }

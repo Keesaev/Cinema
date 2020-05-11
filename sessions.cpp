@@ -1,9 +1,9 @@
 #include "sessions.h"
 #include "ui_sessions.h"
 
-sessions::sessions(QWidget *parent) :
+sessions::sessions(QSqlDatabase *d, QWidget *parent) :
     QWidget(parent),
-    ds(QSqlDatabase::addDatabase("QPSQL")),
+    ds(*d),
     ui(new Ui::sessions)
 
 {
@@ -13,8 +13,9 @@ sessions::sessions(QWidget *parent) :
 
     ui->gridLayout->addWidget(calendar);
 
-    if(!createConnection())
-        close();
+    if(!ds.isOpen())
+        if(!createConnection())
+            close();
 
     connect(calendar, SIGNAL(selectionChanged()), this, SLOT(dateSelected()));
 
@@ -181,6 +182,37 @@ void sessions::on_pbRooms_clicked()
     r->show();
 }
 
+void sessions::on_pbAddSession_clicked()
+{
+    as = new addSession();
+
+    connect(as, SIGNAL(sessionCreated()), this, SLOT(dateSelected()));
+    as->show();
+}
+
+void sessions::on_pbDeleteSession_clicked()
+{
+    if(ui->tableWidget->selectedItems().isEmpty())
+    {
+        qDebug() << "None selected";
+        QMessageBox::warning(0, "Выберите сеанс", "Выберите сеанс из списка");
+        return;
+    }
+
+    q.clear();
+    q.prepare("DELETE FROM SESSIONS WHERE ID_SESSION = :id_session;");
+
+    q.bindValue(":id_session", ui->tableWidget->selectedItems()[0]->text());
+
+    if(!q.exec())
+    {
+        QMessageBox::warning(0, "Ошибка зароса", q.lastError().text());
+        return;
+    }
+
+    dateSelected();
+}
+
 sessions::~sessions()
 {
     for(int i = 0; i < items.size(); i++)
@@ -191,4 +223,5 @@ sessions::~sessions()
     delete m;
     delete b;
     delete r;
+    delete as;
 }

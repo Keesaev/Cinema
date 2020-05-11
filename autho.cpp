@@ -58,7 +58,7 @@ void Widget::on_pbEnter_clicked()
         if(query.value(rec.indexOf("id")).toInt() == ID ||
                 query.value(rec.indexOf("password")).toString() == password){
             qDebug() << "Success";
-            sessions *s = new sessions();
+            sessions *s = new sessions(&d);
             s->show();
 
             this->close();
