@@ -1,13 +1,13 @@
-## Cinema management system
+# Cinema management system
 
-# Training on implementing management system using Qt and PostgreSQL 
+### Training project on implementing management system using Qt and PostgreSQL 
 
-# What is this?
+## What is this?
 
 * Booking service for cinema employees
 * Editing sessions, movies and rooms from managers
 ---
-# Screenshots
+## Screenshots
 
 Booking
 ![Booking](https://sun1-94.userapi.com/hSDD5xknHiBLH6TaRdFnQiOzWxzWYgpzH8RTAg/PdRN6xrHUpg.jpg)
