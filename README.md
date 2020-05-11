@@ -20,4 +20,5 @@ Edit sessions
 Edit movies
 ![Edit movies](https://sun1-94.userapi.com/MLKh0dUoSIG6GFZNzFAZalcYAKBIe9rN3ZjtFQ/rMsGFEeNsiM.jpg)
 Edit rooms
+
 ![Edit rooms](https://sun1-84.userapi.com/bRe0FOhz3TmLyxYLzS61Skot1e9_tDI22ihsTg/cUq8lTKnX3Y.jpg)
