@@ -137,6 +137,8 @@ void rooms::on_pbDelete_clicked()
 
     ui->tableWidget->clear();
     getRooms();
+
+    emit signalDeleted();
 }
 
 void rooms::on_pbExit_clicked()

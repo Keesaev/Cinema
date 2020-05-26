@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     addsession.cpp \
+    bookedtickets.cpp \
     booking.cpp \
     drawcinema.cpp \
     main.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
 HEADERS += \
     addsession.h \
     autho.h \
+    bookedtickets.h \
     booking.h \
     drawcinema.h \
     movies.h \
@@ -42,6 +44,7 @@ HEADERS += \
 FORMS += \
     addsession.ui \
     autho.ui \
+    bookedtickets.ui \
     booking.ui \
     movies.ui \
     rooms.ui \

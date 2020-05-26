@@ -45,6 +45,10 @@ private slots:
 
     void on_pbInsert_clicked();
 
+public:
+signals:
+    void signalDeleted();
+
 private:
     Ui::movies *ui;
 };

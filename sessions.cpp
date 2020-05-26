@@ -1,7 +1,7 @@
 #include "sessions.h"
 #include "ui_sessions.h"
 
-sessions::sessions(QSqlDatabase *d, QWidget *parent) :
+sessions::sessions(int id, QSqlDatabase *d, QWidget *parent) :
     QWidget(parent),
     ds(*d),
     ui(new Ui::sessions)
@@ -9,23 +9,49 @@ sessions::sessions(QSqlDatabase *d, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    calendar = new QCalendarWidget();
-
-    ui->gridLayout->addWidget(calendar);
-
     if(!ds.isOpen())
         if(!createConnection())
             close();
+
+    int privilege = 1;
+    qDebug() << "Id " << id;
+
+    if(!getEmployee(id, privilege))
+    {
+        close();
+    }
+
+    if(privilege == 1){
+        ui->pbAddSession->setEnabled(0);
+        ui->pbAddSession->setVisible(0);
+
+        ui->pbRooms->setEnabled(0);
+        ui->pbMovies->setEnabled(0);
+        ui->pbAddSession->setEnabled(0);
+        ui->pbDeleteSession->setEnabled(0);
+
+        ui->pbRooms->setVisible(0);
+        ui->pbMovies->setVisible(0);
+        ui->pbAddSession->setVisible(0);
+        ui->pbDeleteSession->setVisible(0);
+    }
+    else{
+        m = new movies(&ds);
+        r = new rooms(&ds);
+
+        connect(r, SIGNAL(signalDeleted()), this, SLOT(dateSelected()));
+        connect(m, SIGNAL(signalDeleted()), this, SLOT(dateSelected()));
+    }
+
+    calendar = new QCalendarWidget();
+
+    ui->gridLayout->addWidget(calendar);
 
     connect(calendar, SIGNAL(selectionChanged()), this, SLOT(dateSelected()));
 
     initTable();
 
-    QDate testDate(2020, 5, 21);
-    calendar->setSelectedDate(testDate);
-
-    m = new movies(&ds);
-    r = new rooms(&ds);
+    calendar->setSelectedDate(QDate::currentDate());
 }
 
 // Шапка таблицы и прочие настройки
@@ -115,6 +141,31 @@ bool sessions::displaySessions(){
 
         i++;
     }
+    return 1;
+}
+
+bool sessions::getEmployee(int id, int &priv){
+    q.clear();
+    q.prepare("SELECT * FROM EMPLOYEE_INFO WHERE ID_EMPLOYEE = :id");
+    q.bindValue(":id", id);
+
+    if(!q.exec()){
+        QMessageBox::warning(0, "Ошибка зароса", q.lastError().text());
+        return 0;
+    }
+
+    QSqlRecord rec = q.record();
+    QString str;
+
+    while(q.next()){
+        priv = q.value(rec.indexOf("privilege")).toInt();
+        str = q.value(rec.indexOf("Name")).toString() + " " +
+                q.value(rec.indexOf("Second_Name")).toString() + " " +
+                q.value(rec.indexOf("Job")).toString();
+    }
+
+    ui->leEmployee->setText(str);
+
     return 1;
 }
 

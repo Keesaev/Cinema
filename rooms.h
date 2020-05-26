@@ -44,6 +44,10 @@ private slots:
 
     void on_pbExit_clicked();
 
+public:
+    signals:
+    void signalDeleted();
+
 private:
     Ui::rooms *ui;
 };

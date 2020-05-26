@@ -166,7 +166,6 @@ bool drawCinema::createConnection(){
 }
 
 void drawCinema::itemClicked(int i, int j){
-    qDebug() << "Click";
     QPainter p;
     scene->update();
     emit itemClickedSignal(i, j);

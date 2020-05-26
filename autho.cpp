@@ -45,20 +45,20 @@ void Widget::on_pbEnter_clicked()
     ID = ui->leID->text().toInt();
     password = ui->lePass->text();
 
-    if(!query.exec("SELECT * FROM users;")){
+    if(!query.exec("SELECT * FROM autho;")){
         qDebug() << "Unable to execute query" << query.lastError();
         return;
     }
 
     QSqlRecord rec = query.record();
 
-    QString qPass;
-
     while(query.next()){
         if(query.value(rec.indexOf("id")).toInt() == ID ||
-                query.value(rec.indexOf("password")).toString() == password){
-            qDebug() << "Success";
-            sessions *s = new sessions(&d);
+                query.value(rec.indexOf("password")).toString() == password)
+        {
+            int id = query.value(rec.indexOf("id_employee")).toInt();
+
+            sessions *s = new sessions(id, &d);
             s->show();
 
             this->close();

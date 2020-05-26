@@ -121,6 +121,8 @@ void movies::on_pbDelete_clicked()
     }
 
     getMovies();
+
+    emit signalDeleted();
 }
 
 void movies::on_pbInsert_clicked()

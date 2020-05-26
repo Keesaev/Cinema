@@ -72,12 +72,45 @@ void booking::on_pushButton_clicked()
             return;
         }
     }
+
+    QVector<int> ids;
+
+    for(int i = 0; i < bookedSeats.size(); i++){
+        q.clear();
+        q.prepare("SELECT ID_BOOKED FROM BOOKED WHERE "
+                  "ROW = :ROW AND COL = :COL AND ID_SESSION = :ID_SESSION;");
+        q.bindValue(":ROW", bookedSeats[i].second);
+        q.bindValue(":COL", bookedSeats[i].first);
+        q.bindValue(":ID_SESSION", id_session);
+
+        qDebug() << "Pair " << bookedSeats[i].second << ", " << bookedSeats[i].first;
+
+        if(!q.exec()){
+            qDebug() << "Query error on select id_booked" << q.lastError().text();
+            return;
+        }
+
+        QSqlRecord rec = q.record();
+
+        while(q.next()){
+            ids.push_back(q.value(rec.indexOf("ID_BOOKED")).toInt());
+        }
+    }
+
+    qDebug() << "ids: ";
+    for(int i = 0; i < ids.size(); i++){
+        qDebug() << ids[i] << " ";
+    }
+
     bookedSeats.clear();
     bookedSeats.shrink_to_fit();
 
     scene->scene->update();
 
     ui->teBooked->setText("Места забронированы");
+
+    bookedTickets *btck = new bookedTickets(ids, db, nullptr);
+    btck->show();
 }
 
 void booking::on_pushButton_2_clicked()
@@ -122,5 +155,4 @@ booking::~booking()
     scene->~drawCinema();
     delete scene;
     delete ui;
-    qDebug() << "destructor booking call";
 }

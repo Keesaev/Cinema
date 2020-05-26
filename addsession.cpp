@@ -11,13 +11,10 @@ addSession::addSession(QWidget *parent) :
 
     getMovies();
 
-    QDate d;
-    d.setDate(2020, 5, 21);
-
     QTime t;
     t.setHMS(21, 0, 0);
 
-    ui->dateTimeEdit->setDate(d);
+    ui->dateTimeEdit->setDate(QDate::currentDate());
     ui->dateTimeEdit->setTime(t);
 }
 
@@ -137,11 +134,10 @@ void addSession::on_pbExit_clicked()
 void addSession::on_pbInsert_clicked()
 {
     if(ui->tableWidget->selectedItems().isEmpty() ||
-            ui->tableWidget_2->selectedItems().isEmpty() ||
-            ui->lePrice->text().isEmpty())
+            ui->tableWidget_2->selectedItems().isEmpty())
     {
         QMessageBox::warning(0, "Заполните поля",
-                             "Выберите фильм и зал из списков, выберите дату и цену и нажмите снова");
+                             "Выберите фильм и зал из списков и нажмите снова");
         return;
     }
 

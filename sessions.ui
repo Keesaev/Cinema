@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1085</width>
-    <height>428</height>
+    <height>421</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,9 +27,9 @@
    <property name="geometry">
     <rect>
      <x>720</x>
-     <y>10</y>
+     <y>40</y>
      <width>351</width>
-     <height>301</height>
+     <height>271</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout"/>
@@ -53,7 +53,7 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>720</x>
+     <x>900</x>
      <y>320</y>
      <width>171</width>
      <height>41</height>
@@ -93,7 +93,7 @@
    <property name="geometry">
     <rect>
      <x>720</x>
-     <y>370</y>
+     <y>320</y>
      <width>171</width>
      <height>41</height>
     </rect>
@@ -105,14 +105,30 @@
   <widget class="QPushButton" name="pbDeleteSession">
    <property name="geometry">
     <rect>
-     <x>900</x>
-     <y>320</y>
+     <x>720</x>
+     <y>370</y>
      <width>171</width>
      <height>41</height>
     </rect>
    </property>
    <property name="text">
     <string>Удалить сеанс</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="leEmployee">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>10</y>
+     <width>351</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="frame">
+    <bool>false</bool>
    </property>
   </widget>
  </widget>

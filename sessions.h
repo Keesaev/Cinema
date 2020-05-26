@@ -32,7 +32,7 @@ class sessions : public QWidget
     Q_OBJECT
 
 public:
-    explicit sessions(QSqlDatabase *d, QWidget *parent = nullptr);
+    explicit sessions(int privilege, QSqlDatabase *d, QWidget *parent = nullptr);
     ~sessions();
 
     QSqlDatabase ds;
@@ -47,6 +47,7 @@ public:
     bool createConnection();
     bool getSessions(QDate date);
     bool displaySessions();
+    bool getEmployee(int id, int &priv);
     QVector<QVector<QTableWidgetItem *>> items;
 
 private:

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "drawcinema.h"
+#include "bookedtickets.h"
 
 #include <QVector>
 #include <QPair>
@@ -11,6 +12,8 @@
 #include <QSql>
 #include <QSqlError>
 #include <QSqlRecord>
+
+#include <QDateTime>
 
 namespace Ui {
 class booking;
@@ -23,7 +26,6 @@ class booking : public QWidget
 public:
     explicit booking(int id_s, QSqlDatabase *d, QWidget *parent = nullptr);
     ~booking();
-    QGraphicsView *myGraphicView;
     drawCinema    *scene;
     QSqlDatabase  *db;
 

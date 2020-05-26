@@ -3,6 +3,7 @@
 #include "sessions.h"
 #include "movies.h"
 #include "rooms.h"
+#include "bookedtickets.h"
 
 #include <QApplication>
 
