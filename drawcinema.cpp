@@ -94,6 +94,7 @@ bool drawCinema::getBookedInfo(){
         int i = q.value(rec.indexOf("COL")).toInt();
         int j = q.value(rec.indexOf("ROW")).toInt();
 
+        delete seats[i][j];
         seats[i][j] = new seatBooked(i,
                                      j,
                                      cellWidth,

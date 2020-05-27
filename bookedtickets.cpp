@@ -16,25 +16,50 @@ bookedTickets::bookedTickets(QVector<int> inpBookedIDs, QSqlDatabase *d1, QWidge
     }
 
     scene = new QGraphicsScene();
-    view = new QGraphicsView();
 
+    view = new QGraphicsView();
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setAlignment(Qt::AlignCenter);
     view->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    view->setMinimumSize(200, 100);
+    view->setScene(scene);
+
+    scene->setSceneRect(0, 0, view->width(), view->height());
+
+    ui->gridLayout->addWidget(view);
 
     bookedIDs = inpBookedIDs;
+
+    getTicketsInfo();
+    drawTicket();
 }
 
-// TODO:
-// Интерфейс просмотра билетов - можно скролиить билеты и смотреть какой следующий, какой предыдущий
-// Для начала вывод функцию, выводящую один из билетов на scene - drawTicket(int id) по id обращаемся
-// к элементам tickets, там уже тупо отображаем на сцену. По нажатию кнопки (вправо-влево) будет вызываться
-// та же функция, но с другим айди
+void bookedTickets::drawTicket(){ // Отрисовываем конкретный билет из вектора tickets
+                                        // на графической сцене
+    if(tickets.isEmpty()){
+        getTicketsInfo();
+    }
 
+    QBrush brush;
+    QPen pen;
 
-bool bookedTickets::getTicketsInfo(){   // SQL запрос и запись данных в QVector<QGraphicsItemGroup>
+    pen.setColor(QColor(254, 241, 187));
+    brush.setColor(QColor(254, 241, 187));
+    brush.setStyle(Qt::BrushStyle::SolidPattern);
 
-    tickets.clear();
-    tickets.shrink_to_fit();
+    scene->addRect(0, 0, scene->width(), scene->height(), pen, brush);
+    scene->addItem(tickets[id]);
+}
+
+bool bookedTickets::getTicketsInfo(){   // SQL запрос и запись данных в tickets
+
+    if(!tickets.isEmpty()){
+        for(auto& o : tickets)
+            delete o;
+        tickets.clear();
+        tickets.shrink_to_fit();
+    }
 
     for(int i = 0; i < bookedIDs.size(); i++){
         QSqlQuery q;
@@ -51,34 +76,57 @@ bool bookedTickets::getTicketsInfo(){   // SQL запрос и запись да
 
         QSqlRecord rec = q.record();
 
-        tickets.push_back(QGraphicsItemGroup());
+        tickets.push_back(new QGraphicsItemGroup());
 
         while(q.next()){
-            QString data = q.value(rec.indexOf("NAME")).toString();
-            tickets[i].addToGroup(scene->addText(data));
 
-            data = q.value(rec.indexOf("ID_ROOM")).toString();
-            tickets[i].addToGroup(scene->addText("Зал " + data));
+            QString data;
+            QFont f;
+            f.setPixelSize(20);
+            f.setFamily("Oswald");
 
-            data = q.value(rec.indexOf("LENGTH")).toString();
-            tickets[i].addToGroup(scene->addText("Продолжительность " + data));
+            tickets[i]->setY(0);
+            tickets[i]->addToGroup(scene->addText("Билет \t\t\t№" + QString::number(bookedIDs[i]), f));
 
-            data = q.value(rec.indexOf("ROW")).toString();
-            tickets[i].addToGroup(scene->addText("Ряд " + data));
+            tickets[i]->setY(20);
+            QDateTime dt;
+            dt = q.value(rec.indexOf("DATE")).toDateTime();
+            tickets[i]->addToGroup(scene->addText(dt.date().toString() + "\t" +
+                                                  "\tв " + dt.time().toString() + "\n", f));
 
-            data = q.value(rec.indexOf("COL")).toString();
-            tickets[i].addToGroup(scene->addText("Место " + data));
-
+            tickets[i]->setY(40);
             data = q.value(rec.indexOf("PRICE")).toString();
-            tickets[i].addToGroup(scene->addText("Стоимость билета" + data));
+            tickets[i]->addToGroup(scene->addText("Стоимость билета\t" + data + " рублей \n", f));
 
-            data = q.value(rec.indexOf("DATE")).toString();
-            tickets[i].addToGroup(scene->addText("Дата и время" + data));
+            tickets[i]->setY(60);
+            data = q.value(rec.indexOf("LENGTH")).toString();
+            tickets[i]->addToGroup(scene->addText("Продолжительность\t" + data + "\n", f));
 
-            tickets[i].addToGroup(scene->addText("Билет №" + QString::number(bookedIDs[i])));
+            tickets[i]->setY(80);
+            data = QString::number(q.value(rec.indexOf("COL")).toInt() + 1);
+            tickets[i]->addToGroup(scene->addText("Место\t\t\t" + data + "\n", f));
+
+            tickets[i]->setY(100);
+            data = QString::number(q.value(rec.indexOf("ROW")).toInt() + 1);
+            tickets[i]->addToGroup(scene->addText("Ряд\t\t\t" + data + "\n", f));
+
+            tickets[i]->setY(120);
+            data = q.value(rec.indexOf("ID_ROOM")).toString();
+            tickets[i]->addToGroup(scene->addText("Зал\t\t\t" + data + "\n", f));
+
+            f.setPixelSize(30);
+            tickets[i]->setY(150);
+
+            data = q.value(rec.indexOf("NAME")).toString();
+            tickets[i]->addToGroup(scene->addText(data + "\n", f));
+
+            tickets[i]->setY(190);
+            f.setPixelSize(40);
+            tickets[i]->addToGroup(scene->addText("Кинотеатр Балифаж", f));
         }
     }
 
+    qDebug() << "getTickets success";
     return 1;
 }
 
@@ -97,9 +145,76 @@ bool bookedTickets::createConnection(){
     return 1;
 }
 
+// Листаем влево и вправо, отрисовываем разные билеты
+
+void bookedTickets::on_pbLeft_clicked()
+{
+    scene->removeItem(tickets[id]);
+    scene->clear();
+
+    id--;
+
+    if(id < 0 || id >= bookedIDs.size())
+        id = bookedIDs.size() - 1;
+    drawTicket();
+}
+
+void bookedTickets::on_pbRight_clicked()
+{
+    scene->removeItem(tickets[id]);
+    scene->clear();
+
+    id++;
+
+    if(id < 0 || id >= bookedIDs.size())
+        id = 0;
+    drawTicket();
+}
+
+void bookedTickets::on_pbExit_clicked()
+{
+    this->close();
+}
+
+void bookedTickets::on_pbSaveAll_clicked()
+{
+
+    QString url = QFileDialog::getExistingDirectory(0, "Сохранить",
+                                               "/ c:", QFileDialog :: ShowDirsOnly | QFileDialog :: DontResolveSymlinks);
+
+    if(url == ""){
+        QMessageBox::warning(this, "Ошибка","Введите путь к файлу");
+        return;
+    }
+
+    for(int i = 0; i < bookedIDs.size(); i++){
+
+        scene->removeItem(tickets[id]);
+        scene->clear();
+
+        id = i;
+        drawTicket();
+
+        QImage image(scene->width(), scene->height(), QImage::Format_RGBA8888_Premultiplied);
+
+        QPainter painter(&image);
+        scene->render(&painter);
+        QImageWriter writer(url + "_" + QString::number(bookedIDs[i]) + ".jpg");
+
+        if(!writer.write(image))
+        {
+            QString er = writer.errorString();
+            QMessageBox::warning(this, "Ошибка", "Не удалось сохранить изображение " + er);
+        }
+    }
+}
+
 bookedTickets::~bookedTickets()
 {
     delete ui;
     delete scene;
     delete view;
+
+    for(auto& o : tickets)
+        delete o;
 }

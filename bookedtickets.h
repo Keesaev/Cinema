@@ -17,8 +17,13 @@
 #include <QSqlQuery>
 #include <QSqlRecord>
 
+#include <QFileDialog>
+#include <QImageWriter>
+
 #include <QMessageBox>
 #include <QDebug>
+
+#include <QDateTime>
 
 namespace Ui {
 class bookedTickets;
@@ -33,13 +38,32 @@ public:
     ~bookedTickets();
 
     QGraphicsScene *scene;
+
     QGraphicsView *view;
+
     QVector<int> bookedIDs;
-    QVector<QGraphicsItemGroup> tickets;
+
+    QVector<QGraphicsItemGroup*> tickets;
+
     QSqlDatabase *dt;
 
     bool createConnection();
+
     bool getTicketsInfo();
+
+    void drawTicket();
+
+    int id = 0;
+
+private slots:
+
+    void on_pbLeft_clicked();
+
+    void on_pbRight_clicked();
+
+    void on_pbExit_clicked();
+
+    void on_pbSaveAll_clicked();
 
 private:
     Ui::bookedTickets *ui;

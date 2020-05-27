@@ -5,5 +5,6 @@
         <file>images/backGround.jpg</file>
         <file>images/seat_booked.png</file>
         <file>images/seat_selected.png</file>
+        <file>images/balifazh.png</file>
     </qresource>
 </RCC>
